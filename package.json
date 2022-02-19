@@ -1,6 +1,6 @@
 {
-  "name": "prague-public-transport-arrivals",
-  "homepage": "https://davidhuljak.github.io/prague-public-transport-arrivals/",
+  "name": "dpp-arrival-board",
+  "homepage": "https://davidhuljak.github.io/dpp-arrival-board/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

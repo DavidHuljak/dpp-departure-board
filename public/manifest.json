@@ -1,6 +1,6 @@
 {
-  "short_name": "Prague Public Transport Arrivals",
-  "name": "prague-public-transport-arrivals",
+  "short_name": "dpp-arrival-board",
+  "name": "dpp-arrival-board",
   "icons": [
     {
       "src": "favicon.ico",
