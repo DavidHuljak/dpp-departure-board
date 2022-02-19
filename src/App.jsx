@@ -35,6 +35,13 @@ function App() {
   return (
     <MainStyle>
       <h2>{stop}</h2>
+      <div className="head">
+        <h1 id="line">Linka</h1>
+        <h1 id="terminal">Směr</h1>
+        <h1 id="arrival">Příjezd</h1>
+        <h1 id="platform">Nástupiště</h1>
+      </div>
+
       {result.map((data) => {
         let date = new Date();
         let arrival = new Date(
@@ -66,10 +73,19 @@ function App() {
 }
 
 const MainStyle = styled.div`
+  color: red;
   h2 {
     text-align: center;
-    color: red;
     font-size: 3rem;
+  }
+  .head {
+    color: red;
+    display: flex;
+    justify-content: space-between;
+    margin: 3px;
+    @media (max-width: 600px) {
+      font-size: 0.6rem;
+    }
   }
 `;
 
