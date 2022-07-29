@@ -1,6 +1,6 @@
 {
-  "short_name": "dpp-arrival-board",
-  "name": "dpp-arrival-board",
+  "short_name": "dpp-departure-board",
+  "name": "dpp-departure-board",
   "icons": [
     {
       "src": "favicon.ico",
