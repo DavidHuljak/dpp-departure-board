@@ -55,7 +55,7 @@ function App() {
           <footer>
             Zdroj dat:{" "}
             <a
-              href="https://golemioapi.docs.apiary.io/#"
+              href="https://golemioapi.docs.apiary.io/"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -106,7 +106,7 @@ function App() {
           <footer>
             Zdroj dat:{" "}
             <a
-              href="https://golemioapi.docs.apiary.io/#"
+              href="https://golemioapi.docs.apiary.io/"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -144,6 +144,35 @@ const MainStyle = styled.div`
     margin: 2rem;
     a {
       color: inherit;
+    }
+  }
+  @media (max-width: 1200px) {
+    font-size: 2rem;
+    h2 {
+      font-size: 2.5rem;
+    }
+    footer {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 950px) {
+    font-size: 1.5rem;
+    h2 {
+      font-size: 2rem;
+    }
+    footer {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 700px) {
+    font-size: 1rem;
+    h2 {
+      font-size: 1.5rem;
+    }
+    footer {
+      font-size: 0.7rem;
     }
   }
 `;
