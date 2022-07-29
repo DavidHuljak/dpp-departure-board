@@ -8,20 +8,6 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Roboto Condensed', sans-serif;  
     background: #303030;
   }
-
-  #line {
-    min-width: 10%;
-    margin-left: 5px;
-  }
-  #terminal {
-    min-width: 35%;
-  }
-  #arrival {
-    min-width: 15%;
-  }
-  #platform {
-    min-width: 10%;
-  }
 `;
 
 export default GlobalStyle;
