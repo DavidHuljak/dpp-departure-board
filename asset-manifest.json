@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/dpp-departure-board/static/js/main.d0779548.js",
+    "main.js": "/dpp-departure-board/static/js/main.221a785f.js",
     "index.html": "/dpp-departure-board/index.html",
-    "main.d0779548.js.map": "/dpp-departure-board/static/js/main.d0779548.js.map"
+    "main.221a785f.js.map": "/dpp-departure-board/static/js/main.221a785f.js.map"
   },
   "entrypoints": [
-    "static/js/main.d0779548.js"
+    "static/js/main.221a785f.js"
   ]
 }
