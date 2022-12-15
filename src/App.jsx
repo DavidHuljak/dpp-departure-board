@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     async function fetchAPI() {
       let response = await fetch(
-        `https://dpp-departure-board.herokuapp.com/?cisIds=${cisIds}&limit=5`
+        `https://dpp-departure-board-backend.onrender.com/?cisIds=${cisIds}&limit=5`
       );
       response = await response.json();
       setResult(response[0]);
