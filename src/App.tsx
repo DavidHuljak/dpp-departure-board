@@ -1,5 +1,20 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from "react";
+
+interface DataInterface {
+  route: {
+    short_name: string;
+  };
+  trip: {
+    headsign: string;
+    id: string;
+  };
+  departure_timestamp: {
+    predicted: string;
+  };
+  stop: {
+    platform_code: string;
+  };
+}
 
 //Adjust this number to match your stop. CisIds can be found here: https://data.pid.cz/stops/json/stops.json
 const cisIds = "58791"; // => I. P. Pavlova
@@ -9,17 +24,31 @@ function App() {
   const [stop, setStop] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const formattedTime = (t: string) => {
+    const now = Date.now();
+    const then = new Date(t).getTime();
+    const diffInMs = Math.abs(now - then);
+    const diffInMin = Math.floor(diffInMs / (1000 * 60));
+
+    return diffInMin < 1 ? "< 1 min" : `${diffInMin} min`;
+  };
+
   useEffect(() => {
-    async function fetchAPI() {
-      let response = await fetch(
-        `https://dpp-departure-board-backend.onrender.com/?cisIds=${cisIds}&limit=5`
-      );
-      response = await response.json();
-      setResult(response[0]);
-      setStop(response[1].features[0].properties.stop_name);
-      console.log(response[0]);
-      console.log("Data updated.");
-      setLoading(false);
+    async function fetchAPI(): Promise<void> {
+      try {
+        const response = await fetch(
+          `https://dpp-departure-board-backend.vercel.app/?cisIds=${cisIds}&limit=5`
+        );
+        const data = await response.json();
+
+        setResult(data[0]);
+        setStop(data[1].features[0].properties.stop_name);
+        console.log(data[0]);
+        console.log("Data updated.");
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
     fetchAPI();
     setInterval(fetchAPI, 30000);
@@ -31,7 +60,7 @@ function App() {
   }
 
   return (
-    <MainStyle>
+    <div className="wrapper">
       {loading === true ? (
         <div>
           <h2>Načítání</h2>
@@ -75,27 +104,13 @@ function App() {
                 <td className="head">Nástupiště</td>
               </tr>
 
-              {result.map((data) => {
-                let date = new Date();
-                let departure = new Date(
-                  new Date(data.departure_timestamp.predicted) - date
-                );
+              {result.map((data: DataInterface) => {
                 return (
                   <tr key={data.trip.id}>
                     <td id="line">{data.route.short_name}</td>
                     <td id="terminal">{data.trip.headsign}</td>
                     <td id="departure">
-                      {new Date(data.departure_timestamp.predicted) < date
-                        ? "< 1 min"
-                        : departure <= 60000
-                        ? "< 1 min"
-                        : departure.toISOString().slice(11, 13) === "00"
-                        ? parseInt(departure.toISOString().slice(14, 16), 10) +
-                          " min"
-                        : parseInt(departure.toISOString().slice(11, 13), 10) +
-                          " hod " +
-                          parseInt(departure.toISOString().slice(14, 16), 10) +
-                          " min"}
+                      {formattedTime(data.departure_timestamp.predicted)}
                     </td>
                     <td id="platform">{data.stop.platform_code}</td>
                   </tr>
@@ -115,66 +130,8 @@ function App() {
           </footer>
         </div>
       )}
-    </MainStyle>
+    </div>
   );
 }
-
-const MainStyle = styled.div`
-  font-size: 2.5rem;
-  color: red;
-  h2 {
-    text-align: center;
-    font-size: 3rem;
-  }
-  td,
-  tr {
-    color: red;
-    margin: 3px;
-  }
-  table {
-    width: 60%;
-    margin: 0 auto;
-  }
-  .head {
-    font-weight: bold;
-  }
-  footer {
-    font-size: 2rem;
-    text-align: center;
-    margin: 2rem;
-    a {
-      color: inherit;
-    }
-  }
-  @media (max-width: 1200px) {
-    font-size: 2rem;
-    h2 {
-      font-size: 2.5rem;
-    }
-    footer {
-      font-size: 1.5rem;
-    }
-  }
-
-  @media (max-width: 950px) {
-    font-size: 1.5rem;
-    h2 {
-      font-size: 2rem;
-    }
-    footer {
-      font-size: 1rem;
-    }
-  }
-
-  @media (max-width: 700px) {
-    font-size: 1rem;
-    h2 {
-      font-size: 1.5rem;
-    }
-    footer {
-      font-size: 0.7rem;
-    }
-  }
-`;
 
 export default App;
