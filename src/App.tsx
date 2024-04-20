@@ -37,7 +37,7 @@ function App() {
     async function fetchAPI(): Promise<void> {
       try {
         const response = await fetch(
-          `https://dpp-departure-board-backend.vercel.app/?cisIds=${cisIds}&limit=5`
+          `https://api.huljak.cz/pid/departures?cisIds=${cisIds}&limit=5`
         );
         const data = await response.json();
 

@@ -1,7 +1,7 @@
 {
   "name": "dpp-departure-board",
   "private": true,
-  "homepage": "https://davidhuljak.github.io/dpp-departure-board/",
+  "homepage": "https://boards.huljak.cz",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
