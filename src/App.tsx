@@ -1,137 +1,81 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 
-interface DataInterface {
-  route: {
-    short_name: string;
-  };
+interface IDepartureData {
+  route: { short_name: string };
   trip: {
     headsign: string;
-    id: string;
+    is_air_conditioned: boolean;
+    is_wheelchair_accessible: boolean;
   };
-  departure_timestamp: {
-    predicted: string;
-  };
-  stop: {
-    platform_code: string;
-  };
+  arrival_timestamp: { predicted: string };
+  departure_timestamp: { predicted: string; minutes: string };
+  stop: { platform_code: string };
 }
 
-//Adjust this number to match your stop. CisIds can be found here: https://data.pid.cz/stops/json/stops.json
-const cisIds = "58791"; // => I. P. Pavlova
+const apiEndpoint = "https://api.huljak.cz/";
 
-function App() {
-  const [result, setResult] = useState([]);
-  const [stop, setStop] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  const formattedTime = (t: string) => {
-    const now = Date.now();
-    const then = new Date(t).getTime();
-    const diffInMs = Math.abs(now - then);
-    const diffInMin = Math.floor(diffInMs / (1000 * 60));
-
-    return diffInMin < 1 ? "< 1 min" : `${diffInMin} min`;
-  };
+const App = () => {
+  const [departures, setDepartures] = useState<IDepartureData[]>([]);
+  const [stop, setStop] = useState<string>("");
+  const cisIds = "58791";
 
   useEffect(() => {
-    async function fetchAPI(): Promise<void> {
-      try {
-        const response = await fetch(
-          `https://api.huljak.cz/pid/departures?cisIds=${cisIds}&limit=5`
-        );
-        const data = await response.json();
-
-        setResult(data[0]);
-        setStop(data[1].features[0].properties.stop_name);
-        console.log(data[0]);
-        console.log("Data updated.");
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-    fetchAPI();
-    setInterval(fetchAPI, 30000);
+    const refresh = () => {
+      axios
+        .get(apiEndpoint + "pid/departures?cisIds=" + cisIds + "&limit=5")
+        .then((response) => {
+          setDepartures(response.data.departures);
+          setStop(response.data.stops[0].stop_name);
+          document.title = response.data.stops[0].stop_name;
+        });
+    };
+    refresh();
+    setInterval(refresh, 30000);
   }, []);
-  if (loading === false) {
-    document.title = stop;
-  } else {
-    document.title = "Načítání";
-  }
+
+  if (!departures.length)
+    return (
+      <div className="departure-component">
+        <div className="loader"></div>
+      </div>
+    );
 
   return (
-    <div className="wrapper">
-      {loading === true ? (
-        <div>
-          <h2>Načítání</h2>
-          <table>
-            <tbody>
-              <tr>
-                <td className="head">Linka</td>
-                <td className="head">Směr</td>
-                <td className="head">Odjezd</td>
-                <td className="head">Nástupiště</td>
-              </tr>
+    <div className="departure-component">
+      <h1 id="stop">{stop}</h1>
+      <div className="head">
+        <h1 id="line">Linka</h1>
+        <h1 id="terminal">Směr</h1>
+        <h1 id="arrival">Příjezd</h1>
+        <h1 id="platform">Nástupiště</h1>
+        <h1 id="parameters">Poznámky</h1>
+      </div>
 
-              <tr>
-                <td id="line">Načítání</td>
-                <td id="terminal">Načítání</td>
-                <td id="departure">Načítání</td>
-                <td id="platform">Načítání</td>
-              </tr>
-            </tbody>
-          </table>
-          <footer>
-            Zdroj dat:{" "}
-            <a
-              href="https://golemioapi.docs.apiary.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Golemio API
-            </a>
-          </footer>
+      {departures.map((data, index) => (
+        <div className="departure-card" key={index}>
+          <h1 id="line">{data.route.short_name}</h1>
+          <h1 id="terminal">{data.trip.headsign}</h1>
+          <h1 id="arrival">{data.departure_timestamp.minutes} min</h1>
+          <h1 id="platform">{data.stop.platform_code}</h1>
+          <h1 id="parameters">
+            {data.trip.is_air_conditioned ? "❄️" : ""}
+            {data.trip.is_wheelchair_accessible ? "♿" : ""}
+          </h1>
         </div>
-      ) : (
-        <div>
-          <h2>{stop}</h2>
-          <table>
-            <tbody>
-              <tr>
-                <td className="head">Linka</td>
-                <td className="head">Směr</td>
-                <td className="head">Odjezd</td>
-                <td className="head">Nástupiště</td>
-              </tr>
-
-              {result.map((data: DataInterface) => {
-                return (
-                  <tr key={data.trip.id}>
-                    <td id="line">{data.route.short_name}</td>
-                    <td id="terminal">{data.trip.headsign}</td>
-                    <td id="departure">
-                      {formattedTime(data.departure_timestamp.predicted)}
-                    </td>
-                    <td id="platform">{data.stop.platform_code}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <footer>
-            Zdroj dat:{" "}
-            <a
-              href="https://golemioapi.docs.apiary.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Golemio API
-            </a>
-          </footer>
-        </div>
-      )}
+      ))}
+      <footer>
+        {" "}
+        <a
+          href="https://golemioapi.docs.apiary.io/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Zdroj dat: Golemio
+        </a>
+      </footer>
     </div>
   );
-}
+};
 
 export default App;

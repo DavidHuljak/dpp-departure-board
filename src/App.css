@@ -1,65 +1,108 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: "Barlow", sans-serif;
-  font-family: "Roboto Condensed", sans-serif;
-  background: #303030;
+  font-family: "Poppins", sans-serif;
+  background-color: #121212;
+  color: #ffffff;
 }
 
-.wrapper {
-  font-size: 2.5rem;
+.head {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #bf0808;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+#stop {
+  font-size: 38px;
+  text-align: center;
   color: red;
-  h2 {
-    text-align: center;
-    font-size: 3rem;
+}
+
+.head h1 {
+  font-size: 20px;
+  color: red;
+  flex: 1;
+  text-align: center;
+}
+
+.departure-component {
+  background-color: #1e1e1e;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+.departure-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #232323;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.departure-card h1 {
+  font-size: 24px;
+  color: #ffffff;
+  flex: 1;
+  text-align: center;
+}
+
+.departure-card #line {
+  font-weight: bold;
+  color: red;
+  font-size: 24px;
+}
+
+.departure-card #terminal,
+.departure-card #platform {
+  color: #ffffff;
+  font-size: 24px;
+}
+
+.departure-card #arrival {
+  font-weight: bold;
+  color: red;
+  font-size: 24px;
+}
+
+footer {
+  text-align: center;
+  font-size: 24px;
+  margin: 25px 0 10px 0;
+}
+
+a {
+  color: red;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  #stop {
+    font-size: 24px;
   }
-  td,
-  tr {
-    color: red;
-    margin: 3px;
+
+  .head h1 {
+    font-size: 16px;
   }
-  table {
-    width: 60%;
-    margin: 0 auto;
+
+  .departure-card h1,
+  .departure-card #line,
+  .departure-card #terminal,
+  .departure-card #platform,
+  .departure-card #arrival {
+    font-size: 16px;
   }
-  .head {
-    font-weight: bold;
+
+  .departure-component {
+    padding: 10px;
+    margin: 10px 0;
   }
+
   footer {
-    font-size: 2rem;
-    text-align: center;
-    margin: 2rem;
-    a {
-      color: inherit;
-    }
-  }
-  @media (max-width: 1200px) {
-    font-size: 2rem;
-    h2 {
-      font-size: 2.5rem;
-    }
-    footer {
-      font-size: 1.5rem;
-    }
-  }
-
-  @media (max-width: 950px) {
-    font-size: 1.5rem;
-    h2 {
-      font-size: 2rem;
-    }
-    footer {
-      font-size: 1rem;
-    }
-  }
-
-  @media (max-width: 700px) {
-    font-size: 1rem;
-    h2 {
-      font-size: 1.5rem;
-    }
-    footer {
-      font-size: 0.7rem;
-    }
+    font-size: 16px;
   }
 }
